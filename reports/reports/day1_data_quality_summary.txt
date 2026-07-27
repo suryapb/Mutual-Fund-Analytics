@@ -1,16 +1,29 @@
 Day 1 Data Quality Summary
 
-Day 1 Data Quality Summary
+Project: Mutual Fund Analytics
+Date: 27 July 2026
 
-1. Successfully loaded all 10 CSV datasets using Pandas.
-2. Performed basic data exploration using shape, dtypes, head(), info(), and isnull().
-3. No missing values found in fund_master.csv.
-4. Successfully fetched live NAV data from MFAPI.
-5. Saved live NAV data as CSV files in the data/raw folder.
-6. Retrieved NAV data for 5 mutual fund schemes:
+Tasks Completed:
+1. Created the project folder structure.
+2. Installed required Python libraries.
+3. Loaded all 10 CSV datasets using Pandas.
+4. Explored datasets using:
+   - shape
+   - dtypes
+   - head()
+   - info()
+   - isnull()
+5. No missing values found in fund_master.csv.
+6. Retrieved live NAV data from MFAPI.
+7. Saved live NAV data as CSV in the data/raw folder.
+8. Retrieved and saved NAV data for:
    - SBI Bluechip
    - ICICI Bluechip
    - Nippon Large Cap
    - Axis Bluechip
    - Kotak Bluechip
-7. Connected the project to Git and pushed it to GitHub successfully.
+9. Connected the project to Git and GitHub.
+10. Uploaded the project successfully.
+
+Conclusion:
+The data ingestion process was completed successfully. The datasets were explored, live NAV data was fetched and stored, and the project repository was updated on GitHub.
