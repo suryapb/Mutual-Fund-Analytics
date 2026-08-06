@@ -1,32 +1,32 @@
 import pandas as pd
 
 # Read CSV
-df = pd.read_csv("data/raw/06_industry_folio_count.csv")
+folio= pd.read_csv("data/raw/06_industry_folio_count.csv")
 
 # Check dataset
-print(df.info())
-print(df.isnull().sum())
+print(folio.info())
+print(folio.isnull().sum())
 
 # Remove duplicates
-df = df.drop_duplicates()
+folio = folio.drop_duplicates()
 
 # Remove spaces
-text_columns = df.select_dtypes(include="object").columns
+text_columns = folio.select_dtypes(include="object").columns
 
 for col in text_columns:
-    df[col] = df[col].str.strip()
+    folio[col] = folio[col].str.strip()
 
 # Convert month/date
-df["month"] = pd.to_datetime(df["month"], errors="coerce")
+folio["month"] = pd.to_datetime(folio["month"], errors="coerce")
 
 # Convert folio count to numeric
-df["total_folios_crore"] = pd.to_numeric(df["total_folios_crore"], errors="coerce")
+folio["total_folios_crore"] = pd.to_numeric(folio["total_folios_crore"], errors="coerce")
 
 # Keep valid folio count
-df = df[df["total_folios_crore"] >= 0]
+folio = folio[folio["total_folios_crore"] >= 0]
 
 # Save cleaned CSV
-df.to_csv(
+folio.to_csv(
     "data/processed/industry_folio_count_cleaned.csv",
     index=False
 )

@@ -1,26 +1,26 @@
 import pandas as pd
 
 # Read CSV
-df = pd.read_csv("data/raw/01_fund_master.csv")
+fund= pd.read_csv("data/raw/01_fund_master.csv")
 
 # Check data
-print(df.info())
-print(df.isnull().sum())
+print(fund.info())
+print(fund.isnull().sum())
 
 # Remove duplicate rows
-df = df.drop_duplicates()
+fund = fund.drop_duplicates()
 
 # Remove leading/trailing spaces from text columns
-text_columns = df.select_dtypes(include="object").columns
+text_columns = fund.select_dtypes(include="object").columns
 
 for col in text_columns:
-    df[col] = df[col].str.strip()
+    fund[col] = fund[col].str.strip()
 
 # Convert launch_date to datetime
-df["launch_date"] = pd.to_datetime(df["launch_date"], errors="coerce")
+fund["launch_date"] = pd.to_datetime(fund["launch_date"], errors="coerce")
 
 # Fill missing text values
-df = df.fillna({
+fund = fund.fillna({
     "fund_house": "Unknown",
     "category": "Unknown",
     "sub_category": "Unknown",
@@ -28,13 +28,13 @@ df = df.fillna({
 })
 
 # Validate expense ratio
-df = df[
-    (df["expense_ratio_pct"] >= 0.1) &
-    (df["expense_ratio_pct"] <= 2.5)
+fund = fund[
+    (fund["expense_ratio_pct"] >= 0.1) &
+    (fund["expense_ratio_pct"] <= 2.5)
 ]
 
 # Save
-df.to_csv(
+fund.to_csv(
     "data/processed/fund_master_cleaned.csv",
     index=False
 )

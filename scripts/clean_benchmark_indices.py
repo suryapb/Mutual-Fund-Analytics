@@ -1,32 +1,32 @@
 import pandas as pd
 
 # Read CSV
-df = pd.read_csv("data/raw/10_benchmark_indices.csv")
+benchmark = pd.read_csv("data/raw/10_benchmark_indices.csv")
 
 # Check dataset
-print(df.info())
-print(df.isnull().sum())
+print(benchmark.info())
+print(benchmark.isnull().sum())
 
 # Remove duplicates
-df = df.drop_duplicates()
+benchmark = benchmark.drop_duplicates()
 
 # Remove spaces from text columns
-text_columns = df.select_dtypes(include="object").columns
+text_columns = benchmark.select_dtypes(include="object").columns
 
 for col in text_columns:
-    df[col] = df[col].str.strip()
+    benchmark[col] = benchmark[col].str.strip()
 
 # Convert date
-df["date"] = pd.to_datetime(df["date"], errors="coerce")
+benchmark["date"] = pd.to_datetime(benchmark["date"], errors="coerce")
 
 # Convert index value to numeric
-df["close_value"] = pd.to_numeric(df["close_value"], errors="coerce")
+benchmark["close_value"] = pd.to_numeric(benchmark["close_value"], errors="coerce")
 
 # Keep only positive index values
-df = df[df["close_value"] > 0]
+benchmark = benchmark[benchmark["close_value"] > 0]
 
 # Save cleaned CSV
-df.to_csv(
+benchmark.to_csv(
     "data/processed/benchmark_indices_cleaned.csv",
     index=False
 )

@@ -1,35 +1,35 @@
 import pandas as pd
 
 # Read CSV
-df = pd.read_csv("data/raw/05_category_inflows.csv")
+category = pd.read_csv("data/raw/05_category_inflows.csv")
 
 # Check dataset
-print(df.info())
-print(df.isnull().sum())
+print(category.info())
+print(category.isnull().sum())
 
 # Remove duplicates
-df = df.drop_duplicates()
+category = category.drop_duplicates()
 
 # Remove leading/trailing spaces
-text_columns = df.select_dtypes(include="object").columns
+text_columns = category.select_dtypes(include="object").columns
 
 for col in text_columns:
-    df[col] = df[col].str.strip()
+    category[col] = category[col].str.strip()
 
 # Convert date/month column
-df["month"] = pd.to_datetime(df["month"], errors="coerce")
+category["month"] = pd.to_datetime(category["month"], errors="coerce")
 
 # Convert inflow to numeric
-df["net_inflow_crore"] = pd.to_numeric(df["net_inflow_crore"], errors="coerce")
+category["net_inflow_crore"] = pd.to_numeric(category["net_inflow_crore"], errors="coerce")
 
 # Keep valid inflow values
-df = df[df["net_inflow_crore"] >= 0]
+category = category[category["net_inflow_crore"] >= 0]
 
 # Fill missing category
-df["category"] = df["category"].fillna("Unknown")
+category["category"] = category["category"].fillna("Unknown")
 
 # Save cleaned CSV
-df.to_csv(
+category.to_csv(
     "data/processed/category_inflows_cleaned.csv",
     index=False
 )
