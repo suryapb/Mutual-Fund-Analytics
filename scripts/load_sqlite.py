@@ -1,75 +1,84 @@
+"""
+Load cleaned Mutual Fund Analytics datasets into a SQLite database.
+
+Creates the Bluestock mutual fund database and loads each cleaned
+dataset into its corresponding analytical table.
+"""
+
+from pathlib import Path
+
 import pandas as pd
 from sqlalchemy import create_engine
 
-# Create SQLite database
-engine = create_engine("sqlite:///bluestock_mf.db")
 
-# -----------------------------
-# Read cleaned CSV files
-# -----------------------------
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-fund = pd.read_csv("data/processed/fund_master_cleaned.csv")
+PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+DATABASE_FILE = PROJECT_ROOT / "bluestock_mf.db"
 
-nav = pd.read_csv("data/processed/02_nav_history_cleaned.csv")
+ENGINE = create_engine(
+    f"sqlite:///{DATABASE_FILE}"
+)
 
-aum = pd.read_csv("data/processed/aum_cleaned.csv")
 
-sip = pd.read_csv("data/processed/monthly_sip_inflows_cleaned.csv")
+DATASETS = {
+    "dim_fund": "fund_master_cleaned.csv",
+    "fact_nav": "02_nav_history_cleaned.csv",
+    "fact_aum": "aum_cleaned.csv",
+    "monthly_sip_inflows": "monthly_sip_inflows_cleaned.csv",
+    "category_inflows": "category_inflows_cleaned.csv",
+    "industry_folio_count": "industry_folio_count_cleaned.csv",
+    "fact_performance": "scheme_performance_cleaned.csv",
+    "fact_transactions": "investor_transactions_cleaned.csv",
+    "portfolio_holdings": "portfolio_holdings_cleaned.csv",
+    "benchmark_indices": "benchmark_indices_cleaned.csv",
+}
 
-category = pd.read_csv("data/processed/category_inflows_cleaned.csv")
 
-folio = pd.read_csv("data/processed/industry_folio_count_cleaned.csv")
+def load_dataset(table_name, file_name):
+    """Load one cleaned CSV file into a SQLite table."""
 
-performance = pd.read_csv("data/processed/scheme_performance_cleaned.csv")
+    file_path = PROCESSED_DIR / file_name
 
-transactions = pd.read_csv("data/processed/investor_transactions_cleaned.csv")
+    if not file_path.exists():
+        raise FileNotFoundError(
+            f"Cleaned file not found: {file_path}"
+        )
 
-portfolio = pd.read_csv("data/processed/portfolio_holdings_cleaned.csv")
+    dataframe = pd.read_csv(file_path)
 
-benchmark = pd.read_csv("data/processed/benchmark_indices_cleaned.csv")
+    dataframe.to_sql(
+        table_name,
+        ENGINE,
+        if_exists="replace",
+        index=False,
+    )
 
-# -----------------------------
-# Load into SQLite
-# -----------------------------
+    return len(dataframe)
 
-fund.to_sql("dim_fund", engine, if_exists="replace", index=False)
 
-nav.to_sql("fact_nav", engine, if_exists="replace", index=False)
+def main():
+    """Load all cleaned datasets into SQLite."""
 
-aum.to_sql("fact_aum", engine, if_exists="replace", index=False)
+    print("=" * 60)
+    print("BLUESTOCK MUTUAL FUND ANALYTICS - SQLITE LOAD")
+    print("=" * 60)
 
-sip.to_sql("monthly_sip_inflows", engine, if_exists="replace", index=False)
+    row_counts = {}
 
-category.to_sql("category_inflows", engine, if_exists="replace", index=False)
+    for table_name, file_name in DATASETS.items():
+        count = load_dataset(table_name, file_name)
+        row_counts[table_name] = count
 
-folio.to_sql("industry_folio_count", engine, if_exists="replace", index=False)
+    print("\nSQLite database created successfully.")
+    print(f"Database: {DATABASE_FILE.name}")
 
-performance.to_sql("fact_performance", engine, if_exists="replace", index=False)
+    print("\nRow Counts")
+    print("-" * 40)
 
-transactions.to_sql("fact_transactions", engine, if_exists="replace", index=False)
+    for table_name, count in row_counts.items():
+        print(f"{table_name:<30} {count:,}")
 
-portfolio.to_sql("portfolio_holdings", engine, if_exists="replace", index=False)
 
-benchmark.to_sql("benchmark_indices", engine, if_exists="replace", index=False)
-
-print("====================================")
-print("SQLite database created successfully!")
-print("Database Name : bluestock_mf.db")
-print("====================================")
-
-# -----------------------------
-# Verify Row Counts
-# -----------------------------
-
-print("\nRow Counts\n")
-
-print("dim_fund :", len(fund))
-print("fact_nav :", len(nav))
-print("fact_aum :", len(aum))
-print("monthly_sip_inflows :", len(sip))
-print("category_inflows :", len(category))
-print("industry_folio_count :", len(folio))
-print("fact_performance :", len(performance))
-print("fact_transactions :", len(transactions))
-print("portfolio_holdings :", len(portfolio))
-print("benchmark_indices :", len(benchmark))
+if __name__ == "__main__":
+    main()
