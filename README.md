@@ -409,6 +409,40 @@ Project Status
 
 
 
+
+ ## Bonus Challenge B3 — Monte Carlo NAV Simulation
+
+A Monte Carlo simulation was implemented to project possible NAV outcomes for five selected mutual funds over a 5-year horizon.
+
+### Methodology
+
+- Historical daily NAV data was used to calculate daily returns.
+- Historical mean daily return and daily volatility were calculated for each selected fund.
+- 5,000 simulated NAV paths were generated for each fund.
+- The simulation horizon was 5 years using 252 trading days per year, resulting in 1,260 simulated trading days.
+- 5th, 25th, 50th, 75th and 95th percentile outcomes were calculated.
+
+### Selected Funds
+
+- SBI Bluechip
+- ICICI Bluechip
+- Nippon Large Cap
+- Axis Bluechip
+- Kotak Bluechip
+
+### Outputs
+
+- `outputs/monte_carlo_simulation.csv`
+- `reports/charts/monte_carlo_projection.png`
+- `reports/charts/monte_carlo_outcome_range.png`
+- `notebooks/06_Monte_Carlo_Simulation.ipynb`
+
+### Important Note
+
+Monte Carlo simulation provides probabilistic scenarios based on historical return and volatility characteristics. It is not a guaranteed prediction of future NAV performance.
+
+
+
 ---
 
 ## Author
