@@ -442,7 +442,62 @@ A Monte Carlo simulation was implemented to project possible NAV outcomes for fi
 Monte Carlo simulation provides probabilistic scenarios based on historical return and volatility characteristics. It is not a guaranteed prediction of future NAV performance.
 
 
+## Bonus Challenge B4 — Markowitz Efficient Frontier
 
+Modern Portfolio Theory (Markowitz Portfolio Optimization) was applied to five selected mutual funds to analyze the relationship between portfolio risk and expected return.
+
+### Selected Funds
+
+- SBI Bluechip
+- ICICI Bluechip
+- Nippon Large Cap
+- Axis Bluechip
+- Kotak Bluechip
+
+### Methodology
+
+- Calculated historical daily returns from NAV data.
+- Calculated annualized expected returns.
+- Calculated the annualized covariance matrix.
+- Generated 10,000 random portfolios.
+- Calculated portfolio expected return, volatility and Sharpe ratio.
+- Identified the Maximum Sharpe portfolio.
+- Identified the Minimum Volatility portfolio.
+- Created an Efficient Frontier visualization.
+- Compared optimal portfolio allocations.
+
+### Results
+
+| Portfolio | Expected Return | Volatility | Sharpe Ratio |
+|---|---:|---:|---:|
+| Maximum Sharpe | 18.96% | 6.51% | 2.91 |
+| Minimum Volatility | 16.79% | 6.09% | 2.76 |
+
+### Maximum Sharpe Portfolio Allocation
+
+| Fund | Weight |
+|---|---:|
+| SBI Bluechip | 29.52% |
+| Nippon Large Cap | 27.16% |
+| ICICI Bluechip | 20.52% |
+| Kotak Bluechip | 16.56% |
+| Axis Bluechip | 6.25% |
+
+### Outputs
+
+- `notebooks/07_Markowitz_Portfolio_Optimization.ipynb`
+- `outputs/markowitz_optimal_weights.csv`
+- `outputs/markowitz_portfolio_summary.csv`
+- `reports/charts/markowitz_efficient_frontier.png`
+- `reports/charts/markowitz_portfolio_weights.png`
+
+### Conclusion
+
+The Markowitz analysis demonstrates how combining multiple mutual funds can improve diversification and provide different risk-return combinations.
+
+The Maximum Sharpe portfolio achieved the highest simulated risk-adjusted return, while the Minimum Volatility portfolio achieved the lowest simulated portfolio risk.
+
+The results are based on historical data and should not be interpreted as guaranteed future investment performance.
 ---
 
 ## Author
